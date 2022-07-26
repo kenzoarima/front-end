@@ -1,3 +1,5 @@
+const newrelic = require('newrelic');
+
 (function (){
   'use strict';
 
@@ -109,6 +111,13 @@
 // Update cart item
   app.post("/cart/update", function (req, res, next) {
     console.log("Attempting to update cart item: " + JSON.stringify(req.body));
+
+    newrelic.addCustomAttributes({
+      "cartAction": "update",
+      "item_id": req.body.id,
+      "item_quantity": req.body.quantity
+    });
+    newrelic.recordCustomEvent('socks_cart', {"action": "update", "item": req.body.id});
     
     if (req.body.id == null) {
       next(new Error("Must pass id of item to update"), 400);
