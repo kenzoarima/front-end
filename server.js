@@ -18,14 +18,6 @@ var request = require("request")
   , app          = express()
   , fs           = require("fs")
 
-// index.js
-const { logger } = helpers;
-// overrwrite global console.log object
-global.console.log = (...args) => logger.info.call(logger, ...args);
-
-app.use(cors({
-  credentials: true
-}));
 
 app.use(helpers.rewriteSlash);
 app.use(metrics);

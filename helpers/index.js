@@ -2,7 +2,6 @@
   'use strict';
 
   var request = require("request");
-  var newrelic = require("newrelic");
   var helpers = {};
   var newrelic = require('newrelic');
 
@@ -19,22 +18,6 @@
     transports: [
       // just push to console this will be picked up by Newrlic logger FluentBit daemon
       new winston.transports.Console(),
-    ],
-  });
-
-  const winston = require('winston');
-  const newrelicFormatter = require('@newrelic/winston-enricher');
-  helpers.logger = winston.createLogger({
-    level: 'info',
-    format: winston.format.combine(
-      winston.format.json(),
-      // combine with newrelic enricher
-      newrelicFormatter()
-    ),
-    defaultMeta: { service: 'front-end' },
-    transports: [
-      // just push to console this will be picked up by Newrlic k8s infra agent
-      new winston.transports.Console()
     ],
   });
 
