@@ -1,3 +1,5 @@
+const newrelic = require('newrelic');
+
 (function (){
   'use strict';
 
@@ -110,6 +112,13 @@
   app.post("/cart/update", function (req, res, next) {
     console.log("Attempting to update cart item: " + JSON.stringify(req.body));
 
+    newrelic.addCustomAttributes({
+      "cartAction": "update",
+      "item_id": req.body.id,
+      "item_quantity": req.body.quantity
+    });
+    newrelic.recordCustomEvent('socks_cart', {"action": "update", "item": req.body.id});
+    
     if (req.body.id == null) {
       next(new Error("Must pass id of item to update"), 400);
       return;
@@ -120,8 +129,10 @@
       return;
     }
 
-    if (parseInt(req.body.quantity) > 20) {
-      throw new Error("Cannot have quantity more than 20");
+    // throw an error when quantity is greater than 10
+    if (parseInt(req.body.quantity) > 10) {
+      console.log("Quantity limit per customer reached", req.body.quantity);
+      throw new Error("Quantity limit per customer reached");
     }
 
     var custId = helpers.getCustomerId(req, app.get("env"));
