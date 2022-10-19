@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: front-end
-        image: kchua405/sock-shop-frontend-skaffold
+        image: localhost:5000/nrsg/sock-shop-frontend-skaffold
         imagePullPolicy: Always
         resources:
           limits:
@@ -47,9 +47,9 @@ spec:
           - name: NEW_RELIC_APP_ID
             value: $NEW_RELIC_APP_ID
           - name: NEW_RELIC_METADATA_REPOSITORY_URL
-            value: https://github.com/nvhoanganh/front-end.git
+            value: https://github.com/kenzoarima/front-end.git
           - name: NEW_RELIC_METADATA_COMMIT
-            value: 6e1aa88741db79728e7071d4fbf7c39192038f48
+            value: c3d6a21a4c9d96d3c1d012e2593c753f3519ac75
         securityContext:
           runAsNonRoot: false
           runAsUser: 0
