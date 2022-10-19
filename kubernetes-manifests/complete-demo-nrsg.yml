@@ -1,5 +1,16 @@
 ---
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-config
+data:
+  NEW_RELIC_LICENSE_KEY: <<>>
+  NEW_RELIC_ACCOUNT_ID: "<<>>"
+  NEW_RELIC_TRUST_KEY: "<<>>"
+  NEW_RELIC_BROWSER_LICENSE_KEY: <<>>
+  NEW_RELIC_APP_ID: "<<>>"
+---
+apiVersion: v1
 kind: Namespace
 metadata:
   name: sock-shop
@@ -280,7 +291,10 @@ spec:
           - name: SESSION_REDIS
             value: "true"
           - name: NEW_RELIC_LICENSE_KEY
-            value: $NEW_RELIC_LICENSE_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: demo-config
+                key: NEW_RELIC_LICENSE_KEY
           - name: NEW_RELIC_APP_NAME
             value: sock-shop-frontend
           - name: NEW_RELIC_NO_CONFIG_FILE
@@ -288,13 +302,25 @@ spec:
           - name: NEW_RELIC_DISTRIBUTED_TRACING_ENABLED
             value: "true"
           - name: NEW_RELIC_ACCOUNT_ID
-            value: $NEW_RELIC_ACCOUNT_ID
+            valueFrom:
+              configMapKeyRef:
+                name: demo-config
+                key: NEW_RELIC_ACCOUNT_ID
           - name: NEW_RELIC_TRUST_KEY
-            value: $NEW_RELIC_ACCOUNT_ID
+            valueFrom:
+              configMapKeyRef:
+                name: demo-config
+                key: NEW_RELIC_ACCOUNT_ID
           - name: NEW_RELIC_BROWSER_LICENSE_KEY
-            value: $NEW_RELIC_BROWSER_LICENSE_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: demo-config
+                key: NEW_RELIC_BROWSER_LICENSE_KEY
           - name: NEW_RELIC_APP_ID
-            value: $NEW_RELIC_APP_ID
+            valueFrom:
+              configMapKeyRef:
+                name: demo-config
+                key: NEW_RELIC_APP_ID
           - name: NEW_RELIC_METADATA_REPOSITORY_URL
             value: https://github.com/kenzoarima/front-end.git
           - name: NEW_RELIC_METADATA_COMMIT
@@ -364,7 +390,10 @@ spec:
          - name: JAVA_OPTS
            value: -Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false -javaagent:/usr/src/app/newrelic.jar -Dlogging.level.org.springframework=DEBUG
          - name: NEW_RELIC_LICENSE_KEY
-           value: $NEW_RELIC_LICENSE_KEY
+           valueFrom:
+             configMapKeyRef:
+               name: demo-config
+               key: NEW_RELIC_LICENSE_KEY
          - name: NEW_RELIC_LOG_FILE_NAME
            value: STDOUT
          - name: NEW_RELIC_APP_NAME
@@ -742,7 +771,10 @@ spec:
          - name: JAVA_OPTS
            value: -Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false -javaagent:/usr/src/app/newrelic.jar
          - name: NEW_RELIC_LICENSE_KEY
-           value: $NEW_RELIC_LICENSE_KEY
+           valueFrom:
+             configMapKeyRef:
+               name: demo-config
+               key: NEW_RELIC_LICENSE_KEY
          - name: NEW_RELIC_LOG_FILE_NAME
            value: STDOUT
          - name: NEW_RELIC_APP_NAME
