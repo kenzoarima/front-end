@@ -4,10 +4,10 @@ metadata:
   name: front-end
 build:
   artifacts:
-  - image: kchua405/sock-shop-frontend-skaffold
+  - image: localhost:5000/nrsg/sock-shop-frontend-skaffold
     docker:
       dockerfile: Dockerfile
 deploy:
   kubectl:
     manifests:
-    - kubernetes-manifests/complete-demo-kenzo.yml
+    - kubernetes-manifests/deployment-svc-frontend.yml
