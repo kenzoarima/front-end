@@ -57,9 +57,10 @@ export default function () {
 
   sleep(1);
 
-  console.log('loging now')
+  
+  console.log('login now')
 
-  // login using user "user" and passwor "password"
+  // login using user "user" and password "password"
   const loginR = http.get(`${BASE_URL}login`, {
     headers: { 'Authorization': 'Basic dXNlcjpwYXNzd29yZA==' }
   });
@@ -68,6 +69,7 @@ export default function () {
     'login status is 200': (r) => r.status === 200,
   });
 
+  
   console.log('user is now logged in, checking to see items in the basket')
 
   sleep(1);
@@ -95,6 +97,7 @@ export default function () {
     'add item to cart: status is 201': (r) => r.status === 201,
   });
 
+  
   console.log('view cart again')
 
   request = http.get(`${BASE_URL}cart`);
@@ -104,6 +107,7 @@ export default function () {
     'cart is not empty array': (r) => JSON.parse(r.body).length > 0,
   });
 
+  
   console.log('update number of items in the cart to 20, this should generate error')
 
   request = http.post(`${BASE_URL}cart/update`, JSON.stringify({
@@ -117,6 +121,7 @@ export default function () {
     'update cart to more than 20: status is 500': (r) => r.status === 500
   });
 
+  
   console.log('update number of items in the cart to 1, this should be ok')
 
   request = http.post(`${BASE_URL}cart/update`, JSON.stringify({
