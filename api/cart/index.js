@@ -48,6 +48,11 @@ const newrelic = require('newrelic');
 
     console.log("Delete item from cart: " + req.url);
 
+    newrelic.addCustomAttributes({
+      "action": "cart_delete",
+      "item_id": req.params.id
+    });
+
     var custId = helpers.getCustomerId(req, app.get("env"));
 
     var options = {
@@ -71,6 +76,12 @@ const newrelic = require('newrelic');
       next(new Error("Must pass id of item to add"), 400);
       return;
     }
+
+    newrelic.addCustomAttributes({
+      "action": "cart_add",
+      "item_id": req.body.id,
+      "item_quantity": 1
+    });
 
     var custId = helpers.getCustomerId(req, app.get("env"));
 
@@ -112,13 +123,6 @@ const newrelic = require('newrelic');
   app.post("/cart/update", function (req, res, next) {
     console.log("Attempting to update cart item: " + JSON.stringify(req.body));
 
-    newrelic.addCustomAttributes({
-      "cartAction": "update",
-      "item_id": req.body.id,
-      "item_quantity": req.body.quantity
-    });
-    newrelic.recordCustomEvent('socks_cart', {"action": "update", "item": req.body.id});
-    
     if (req.body.id == null) {
       next(new Error("Must pass id of item to update"), 400);
       return;
@@ -134,6 +138,12 @@ const newrelic = require('newrelic');
       console.log("Quantity limit per customer reached", req.body.quantity);
       throw new Error("Quantity limit per customer reached");
     }
+
+    newrelic.addCustomAttributes({
+      "action": "cart_update",
+      "item_id": req.body.id,
+      "item_quantity": req.body.quantity
+    });
 
     var custId = helpers.getCustomerId(req, app.get("env"));
 

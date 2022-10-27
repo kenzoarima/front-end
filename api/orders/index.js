@@ -131,6 +131,22 @@
             }
             console.log("Order response: " + JSON.stringify(response));
             console.log("Order response: " + JSON.stringify(body));
+            console.log(body);
+
+            //let customAttr = {};
+            body.items.forEach(item => {
+              newrelic.addCustomAttributes({
+                "action": "cart_purchased",
+                "item_id": item.itemId,
+                "item_quantity": item.quantity
+              });
+            });
+            newrelic.recordCustomEvent('cart_sales', {
+              "timestamp": body.date,
+              "amount": body.total,
+              "customerId": body.customerId
+            });
+
             callback(null, response.statusCode, body);
           });
         }

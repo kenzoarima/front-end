@@ -15,10 +15,25 @@
   });
 
   app.get("/catalogue*", function (req, res, next) {
+
+    newrelic.addCustomAttributes({
+      "action": "view_catalogue",
+      "catalogue": req.url.toString()
+    });
+
     helpers.simpleHttpRequest(endpoints.catalogueUrl + req.url.toString(), res, next);
   });
 
   app.get("/tags", function(req, res, next) {
+
+    console.log("view_catalogue_tags ");
+    console.log(req);
+
+    newrelic.addCustomAttributes({
+      "action": "view_catalogue_tags",
+      "catalogue": req.url.toString()
+    });
+
     helpers.simpleHttpRequest(endpoints.tagsUrl, res, next);
   });
 
