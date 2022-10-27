@@ -1,3 +1,5 @@
+const newrelic = require('newrelic');
+
 (function (){
   'use strict';
 
