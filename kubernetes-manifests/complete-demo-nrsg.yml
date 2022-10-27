@@ -7,7 +7,7 @@ data:
   NEW_RELIC_LICENSE_KEY: <<>>
   NEW_RELIC_ACCOUNT_ID: "<<>>"
   NEW_RELIC_TRUST_KEY: "<<>>"
-  NEW_RELIC_BROWSER_LICENSE_KEY: <<>>
+  NEW_RELIC_BROWSER_LICENSE_KEY: "<<>>"
   NEW_RELIC_APP_ID: "<<>>"
 ---
 apiVersion: v1
