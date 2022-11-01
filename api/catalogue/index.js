@@ -20,8 +20,10 @@ const newrelic = require('newrelic');
 
     console.log("req.session catalogue");
     console.log(req.session);
+    var custIdKen = (req.session.customerId ? req.session.customerId : "100");
 
     newrelic.addCustomAttributes({
+      "customerId": custIdKen,
       "action": "view_catalogue",
       "catalogue": req.url.toString()
     });
@@ -33,8 +35,10 @@ const newrelic = require('newrelic');
 
     console.log("view_catalogue_tags ");
     console.log(req);
+    var custIdKen = (req.session.customerId ? req.session.customerId : "100");
 
     newrelic.addCustomAttributes({
+      "customerId": custIdKen,
       "action": "view_catalogue_tags",
       "catalogue": req.url.toString()
     });

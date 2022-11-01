@@ -58,6 +58,7 @@ const newrelic = require('newrelic');
     var custId = req.session.customerId;
     console.log("req.session orders");
     console.log(req.session);
+    //const custIdKen = (req.session.customerId ? req.session.customerId : "100");
 
     async.waterfall([
         function (callback) {
@@ -140,6 +141,7 @@ const newrelic = require('newrelic');
             //let customAttr = {};
             body.items.forEach(item => {
               newrelic.addCustomAttributes({
+                "customerId": body.customerId,
                 "action": "cart_purchased",
                 "item_id": item.itemId,
                 "item_quantity": item.quantity

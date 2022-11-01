@@ -50,8 +50,10 @@ const newrelic = require('newrelic');
 
     console.log("req.session cart");
     console.log(req.session);
+    var custIdKen = (req.session.customerId ? req.session.customerId : "100");
 
     newrelic.addCustomAttributes({
+      "customerId": custIdKen,
       "action": "cart_delete",
       "item_id": req.params.id
     });
@@ -82,8 +84,10 @@ const newrelic = require('newrelic');
 
     console.log("req.session cart");
     console.log(req.session);
+    var custIdKen = (req.session.customerId ? req.session.customerId : "100");
 
     newrelic.addCustomAttributes({
+      "customerId": custIdKen,
       "action": "cart_add",
       "item_id": req.body.id,
       "item_quantity": 1
@@ -147,8 +151,10 @@ const newrelic = require('newrelic');
 
     console.log("req.session cart");
     console.log(req.session);
+    var custIdKen = (req.session.customerId ? req.session.customerId : "100");
 
     newrelic.addCustomAttributes({
+      "customerId": custIdKen,
       "action": "cart_update",
       "item_id": req.body.id,
       "item_quantity": req.body.quantity
