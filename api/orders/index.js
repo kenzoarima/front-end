@@ -56,6 +56,8 @@ const newrelic = require('newrelic');
     }
 
     var custId = req.session.customerId;
+    console.log("req.session orders");
+    console.log(req.session);
 
     async.waterfall([
         function (callback) {

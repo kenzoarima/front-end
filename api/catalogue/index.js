@@ -18,6 +18,9 @@ const newrelic = require('newrelic');
 
   app.get("/catalogue*", function (req, res, next) {
 
+    console.log("req.session catalogue");
+    console.log(req.session);
+
     newrelic.addCustomAttributes({
       "action": "view_catalogue",
       "catalogue": req.url.toString()

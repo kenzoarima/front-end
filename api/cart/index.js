@@ -48,6 +48,9 @@ const newrelic = require('newrelic');
 
     console.log("Delete item from cart: " + req.url);
 
+    console.log("req.session cart");
+    console.log(req.session);
+
     newrelic.addCustomAttributes({
       "action": "cart_delete",
       "item_id": req.params.id
@@ -76,6 +79,9 @@ const newrelic = require('newrelic');
       next(new Error("Must pass id of item to add"), 400);
       return;
     }
+
+    console.log("req.session cart");
+    console.log(req.session);
 
     newrelic.addCustomAttributes({
       "action": "cart_add",
@@ -138,6 +144,9 @@ const newrelic = require('newrelic');
       console.log("Quantity limit per customer reached", req.body.quantity);
       throw new Error("Quantity limit per customer reached");
     }
+
+    console.log("req.session cart");
+    console.log(req.session);
 
     newrelic.addCustomAttributes({
       "action": "cart_update",
