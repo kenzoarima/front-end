@@ -133,6 +133,10 @@ const newrelic = require('newrelic');
   app.post("/cart/update", function (req, res, next) {
     console.log("Attempting to update cart item: " + JSON.stringify(req.body));
 
+    console.log("req.session cart");
+    console.log(req.session);
+    var custIdKen = (req.session.customerId ? req.session.customerId : "100");
+
     newrelic.addCustomAttributes({
       "customerId": custIdKen,
       "action": "cart_update",
@@ -156,9 +160,6 @@ const newrelic = require('newrelic');
       throw new Error("Quantity limit per customer reached");
     }
 
-    console.log("req.session cart");
-    console.log(req.session);
-    var custIdKen = (req.session.customerId ? req.session.customerId : "100");
 
     var custId = helpers.getCustomerId(req, app.get("env"));
 
