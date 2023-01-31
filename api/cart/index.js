@@ -133,6 +133,13 @@ const newrelic = require('newrelic');
   app.post("/cart/update", function (req, res, next) {
     console.log("Attempting to update cart item: " + JSON.stringify(req.body));
 
+    newrelic.addCustomAttributes({
+      "customerId": custIdKen,
+      "action": "cart_update",
+      "item_id": req.body.id,
+      "item_quantity": req.body.quantity
+    });
+
     if (req.body.id == null) {
       next(new Error("Must pass id of item to update"), 400);
       return;
@@ -152,13 +159,6 @@ const newrelic = require('newrelic');
     console.log("req.session cart");
     console.log(req.session);
     var custIdKen = (req.session.customerId ? req.session.customerId : "100");
-
-    newrelic.addCustomAttributes({
-      "customerId": custIdKen,
-      "action": "cart_update",
-      "item_id": req.body.id,
-      "item_quantity": req.body.quantity
-    });
 
     var custId = helpers.getCustomerId(req, app.get("env"));
 
