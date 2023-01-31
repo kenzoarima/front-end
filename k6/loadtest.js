@@ -13,9 +13,9 @@ export const options = {
   //   { target: 5, duration: '3m' },
   // ],
   stages: [
-    { target: 10, duration: '10m' },
-    { target: 10, duration: '20m' },
-    { target: 10, duration: '1m' },
+    { target: 2, duration: '10m' },
+    { target: 2, duration: '20m' },
+    { target: 2, duration: '1m' },
     { target: 2, duration: '1m' },
     { target: 0, duration: '1m' },
   ],
