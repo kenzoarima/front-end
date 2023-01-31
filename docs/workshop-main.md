@@ -101,7 +101,9 @@ kubectl rollout restart DaemonSet newrelic-bundle-newrelic-logging -n newrelic
 
 C1. Click on the **Website** tab, and that will open a new tab displaying the e-commerce front end website. Try clicking around, browse the items in the catalogue and add them into your cart.
 
-C2. After browsing around the website, navigate to your one.newrelic.com portal and check that data has been ingested. You should see:
+C2. Simulate registering as 2-3 users and repeat step C1. This is to facilitate the upcoming tasks.
+
+C3. After browsing around the website, navigate to your one.newrelic.com portal and check that data has been ingested. You should see:
 
 - APMs: sock-shop-frontend, sock-shop-orders, sock-shop-shipping
 - Kubernetes: sock-shop-cluster
@@ -118,7 +120,7 @@ D2. Run this command. Note down the **External-IP** address of the **frontend** 
 k get svc -n sock-shop
 ```
 
-D3. Replace the **<<ip-address>>** and run this command:
+D3. Replace the `<<ip-address>>` and run this command:
 ```
 k6 run -e PUBLIC_IP=<<ip-address>> k6/loadtest.js
 ```
@@ -146,14 +148,52 @@ E6. When the re-build is done, you can navigate to the **Website** tab, refresh 
 
 ***
 
-# F) Gain Insights from NR1 Dashboards.
-&nbsp;
+# F) Gain Insights from New Relic Dashboards.
+
+![New Relic Marketplace Dashboards](https://raw.githubusercontent.com/kenzoarima/front-end/step-6-NR-skaffold-test/docs/nr-marketplace-dashboards.png)
+
+F1. A key component of New Relic is allowing users to customise the dashboards and visualise the important information they want to see. We have many quickstart templates for you to choose from as we can see in the above screenshot. In this case we will search for **Customer experience bottom of the funnel analysis**  . Click on it to install the dashboard. You will see something like below.
+
+![Customer Experience Dashboard](https://raw.githubusercontent.com/kenzoarima/front-end/step-6-NR-skaffold-test/docs/sock-shop-bofa.png)
+
+F2. Let's update the Funnel visualisation with this NRQL:
+```
+FROM Transaction SELECT funnel(customerId, WHERE action LIKE 'view_catalogue' OR action LIKE 'view_catalogue_tags' AS 'Browser Items', WHERE action LIKE 'cart_add' AS 'Add to Cart', WHERE action LIKE 'cart_update' AS 'Update Cart', WHERE action LIKE 'cart_purchased' AS 'Purchased') WHERE appName = 'sock-shop-frontend' AND action IS NOT NULL LIMIT MAX
+```
+
+You should now be able to see a nice funnel tapering downwards, showing you the customer conversion on the e-commerce website. This is based on the user actions that you have done earlier in step C.
+
 ***
 
-# G) Fix the error indicated in Error Inbox.
-&nbsp;
+# G) Implement custom events and custom attributes.
+G1. Click on the **VSCode** tab, and on the left side panel, click on **api > cart > index.js**
+
+G2. Search for `newrelic.addCustomAttributes` . This is how you can easily add custom attributes to your transactions to enrich them with the data you need.
+
+G3. Let's add an additional key/value pair into the existing custom attributes: `"enduser.id": custIdKen,` , the final codes should look very similar to:
+```
+newrelic.addCustomAttributes({
+  "customerId": custIdKen,
+  "enduser.id": custIdKen,
+  "action": "cart_add",
+  "item_id": req.body.id,
+  "item_quantity": 1
+});
+```
+
+G4. Do the same for the other areas in the code that we have added Custom Attributes. Finally, remember to save the file.
+
+G5. Navigate to **Terminal 2**, and observe Skaffold re-building the image and re-deploying the application.
+
 ***
 
-# H) Implement custom events and custom metrics.
-&nbsp;
+# H) Fix the error indicated in Errors Inbox.
+H1. Check that the Load Test Simulator is still running in Step D. If not, re-run the `k6 run ...` command.
+
+H2. Navigate to APM > sock-shop-frontend > Errors inbox , you should see something like this:
+
+![Errors Inbox](https://raw.githubusercontent.com/kenzoarima/front-end/step-6-NR-skaffold-test/docs/sock-shop-errrosinbox.png)
+
+H3. Navigate through to solve the bug!
+
 ***
