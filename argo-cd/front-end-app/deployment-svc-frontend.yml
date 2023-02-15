@@ -1,0 +1,106 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-end
+  namespace: sock-shop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: front-end
+  template:
+    metadata:
+      labels:
+        name: front-end
+    spec:
+      containers:
+      - name: front-end
+        image: kchua405/sock-shop-frontend:AddNR_Custom
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 300m
+            memory: 1000Mi
+          requests:
+            cpu: 100m
+            memory: 300Mi
+        ports:
+        - containerPort: 8079
+        env:
+          - name: SESSION_REDIS
+            value: "true"
+          - name: NEW_RELIC_LICENSE_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: demo-config
+                key: NEW_RELIC_LICENSE_KEY
+          - name: NEW_RELIC_APP_NAME
+            value: sock-shop-frontend
+          - name: NEW_RELIC_NO_CONFIG_FILE
+            value: "true"
+          - name: NEW_RELIC_DISTRIBUTED_TRACING_ENABLED
+            value: "true"
+          - name: NEW_RELIC_ACCOUNT_ID
+            valueFrom:
+              configMapKeyRef:
+                name: demo-config
+                key: NEW_RELIC_ACCOUNT_ID
+          - name: NEW_RELIC_TRUST_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: demo-config
+                key: NEW_RELIC_ACCOUNT_ID
+          - name: NEW_RELIC_BROWSER_LICENSE_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: demo-config
+                key: NEW_RELIC_BROWSER_LICENSE_KEY
+          - name: NEW_RELIC_APP_ID
+            valueFrom:
+              configMapKeyRef:
+                name: demo-config
+                key: NEW_RELIC_APP_ID
+          - name: NEW_RELIC_METADATA_REPOSITORY_URL
+            value: https://github.com/kenzoarima/front-end.git
+          - name: NEW_RELIC_METADATA_COMMIT
+            value: c3d6a21a4c9d96d3c1d012e2593c753f3519ac75
+        securityContext:
+          runAsNonRoot: false
+          runAsUser: 0
+          capabilities:
+            drop:
+              - all
+          readOnlyRootFilesystem: true
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8079
+          initialDelaySeconds: 300
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8079
+          initialDelaySeconds: 30
+          periodSeconds: 3
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-end
+  annotations:
+        prometheus.io/scrape: 'true'
+  labels:
+    name: front-end
+  namespace: sock-shop
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8079
+    nodePort: 30001
+  selector:
+    name: front-end
