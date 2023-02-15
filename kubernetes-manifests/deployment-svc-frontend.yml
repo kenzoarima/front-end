@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: front-end
-        image: localhost:5000/nrsg/sock-shop-frontend-skaffold
+        image: kchua405/sock-shop-frontend-skaffold
         imagePullPolicy: Always
         resources:
           limits:
