@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: front-end
+  namespace: sock-shop
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/kenzoarima/front-end.git
+    targetRevision: step-7-argo-cd-test
+    path: kubernetes-manifests/deployment-svc-frontend.yml
+    directory:
+      recurse: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: sock-shop
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
