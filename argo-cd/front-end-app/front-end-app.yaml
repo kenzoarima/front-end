@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/kenzoarima/front-end.git
     targetRevision: step-7-argo-cd-test
-    path: kubernetes-manifests/deployment-svc-frontend.yml
+    path: kubernetes-manifests/test/deployment-svc-frontend.yml
     directory:
       recurse: false
   destination:
