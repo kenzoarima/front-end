@@ -64,7 +64,7 @@ spec:
           - name: NEW_RELIC_METADATA_REPOSITORY_URL
             value: https://github.com/kenzoarima/front-end.git
           - name: NEW_RELIC_METADATA_COMMIT
-            value: c3d6a21a4c9d96d3c1d012e2593c753f3519ac75
+            value: 91cd447ae9f01897719985cf7b99910781680386
         securityContext:
           runAsNonRoot: false
           runAsUser: 0
