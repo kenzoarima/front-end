@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: front-end
-        image: kchua405/sock-shop-frontend-skaffold:v0.0.2-62-g3812baf-dirty
+        image: kchua405/sock-shop-frontend-skaffold:v0.0.2-63-g3812baf-dirty
         imagePullPolicy: Always
         resources:
           limits:
